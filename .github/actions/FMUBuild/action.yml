@@ -20,7 +20,7 @@ runs:
       with:
         string: ${{ github.actor }}/${{ github.event.repository.name }}
 
-    - uses: tyriis/docker-image-tag-exists@v2.0.2
+    - uses: tyriis/docker-image-tag-exists@v2.0.3
       id: dockertagexists
       name: find out if docker tag exists
       with:
