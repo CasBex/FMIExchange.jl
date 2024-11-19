@@ -41,7 +41,7 @@ RUN cd OpenModelica && \
     cmake --build build_cmake --target install --parallel $(nproc)
 
 FROM setup as modelica_libs
-ENV OMLIB ~/.openmodelica/libraries
+ENV OMLIB /root/.openmodelica/libraries
 RUN git config --global advice.detachedHead false
 RUN git clone https://github.com/lbl-srg/modelica-buildings $OMLIB/modelica-buildings --branch v9.1.1 --depth 1
 RUN git clone https://github.com/open-ideas/IDEAS $OMLIB/IDEASlib --branch v3.0 --depth 1
