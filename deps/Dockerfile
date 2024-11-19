@@ -41,15 +41,16 @@ RUN cd OpenModelica && \
     cmake --build build_cmake --target install --parallel $(nproc)
 
 FROM setup as modelica_libs
+ENV OMLIB ~/.openmodelica/libraries
 RUN git config --global advice.detachedHead false
-RUN git clone https://github.com/lbl-srg/modelica-buildings ~/.openmodelica/libraries/modelica-buildings --branch v9.1.1 --depth 1
-RUN git clone https://github.com/open-ideas/IDEAS ~/.openmodelica/libraries/IDEASlib --branch v3.0 --depth 1
-RUN git clone https://gitlab.kuleuven.be/positive-energy-districts/moped ~/.openmodelica/libraries/moped
-RUN git clone https://github.com/modelica/ModelicaStandardLibrary ~/.openmodelica/libraries/ModelicaStandardLibrary --branch v4.0.0 --single-branch
-RUN mv ~/.openmodelica/libraries/modelica-buildings/Buildings ~/.openmodelica/libraries/
-RUN mv ~/.openmodelica/libraries/IDEASlib/IDEAS ~/.openmodelica/libraries/
-RUN mv ~/.openmodelica/libraries/moped/MoPED ~/.openmodelica/libraries/
-RUN mv ~/.openmodelica/libraries/ModelicaStandardLibrary/Modelica ~/.openmodelica/libraries/
+RUN git clone https://github.com/lbl-srg/modelica-buildings $OMLIB/modelica-buildings --branch v9.1.1 --depth 1
+RUN git clone https://github.com/open-ideas/IDEAS $OMLIB/IDEASlib --branch v3.0 --depth 1
+RUN git clone https://gitlab.kuleuven.be/positive-energy-districts/moped $OMLIB/moped --single-branch && cd $OMLIB/moped && git checkout 39ca11e5
+RUN git clone https://github.com/modelica/ModelicaStandardLibrary $OMLIB/ModelicaStandardLibrary --branch v4.0.0 --single-branch
+RUN mv $OMLIB/modelica-buildings/Buildings $OMLIB/
+RUN mv $OMLIB/IDEASlib/IDEAS $OMLIB/
+RUN mv $OMLIB/moped/MoPED $OMLIB/
+RUN mv $OMLIB/ModelicaStandardLibrary/Modelica $OMLIB/
 
 FROM ubuntu:latest
 RUN apt-get update && \
